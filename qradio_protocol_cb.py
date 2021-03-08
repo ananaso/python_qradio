@@ -97,7 +97,7 @@ class QradioProtocolCb(Protocol):
             #   based on RS codeblocks
             if self.TotalPktLen > 1115:
                 # convert to strs without the preceding 0x for additional vals
-                msg_id = hex(ord(self.tlm_buffer[4])) + 
+                msg_id = hex(ord(self.tlm_buffer[4])) + \
                     hex(ord(self.tlm_buffer[5]))[2:]
                 print(f"[ERROR]Received a telemetry packet length error: packet len {self.TotalPktLen} MsgId: {msg_id}")
                 
