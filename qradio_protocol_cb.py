@@ -51,7 +51,7 @@ class QradioProtocolCb(Protocol):
         #   of a frame synch
         # This loop should continue reading until we can't read anymore or until
         #   we find 0xDE
-        while (size != 0) && (self.PktLen == 0):
+        while (size != 0) and (self.PktLen == 0):
             self.tlm_buffer.append(self.input_buffer.pop())
             size = len(self.tlm_buffer)
             if size == 0: # nothing more to read
@@ -64,7 +64,7 @@ class QradioProtocolCb(Protocol):
                 self.tlm_buffer.clear()
     
         # Get the rest of the frame synch if we don't have it yet
-        if (self.PktLen >= 1) && (self.PktLen < 4):
+        if (self.PktLen >= 1) and (self.PktLen < 4):
             for i in range(self.PktLen, 4):
                 self.tlm_buffer.append(self.input_buffer.pop())
             self.PktLen = len(self.tlm_buffer)
@@ -73,7 +73,7 @@ class QradioProtocolCb(Protocol):
                 return ""
         
         # We've found the frame synch but we don't have the entire header yet
-        if (self.PktLen >= 4) && (self.PktLen < header_size):
+        if (self.PktLen >= 4) and (self.PktLen < header_size):
             for i in range(self.PktLen, header_size):
                 self.tlm_buffer.append(self.input_buffer.pop())
             self.PktLen = len(self.tlm_buffer)
@@ -150,7 +150,7 @@ class QradioProtocolCb(Protocol):
         if len(self.input_buffer) == self.input_buffer.maxlen:
             print(self.input_buffer)
         # return telemetry packets
-        if (output_buffer == None) || len(output_buffer) == 0:
+        if (output_buffer == None) or len(output_buffer) == 0:
             return self.STOP
         else
             return super().read_data(output_buffer)
