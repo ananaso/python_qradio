@@ -22,7 +22,7 @@ class QradioProtocolCb(Protocol):
         self.PktLen = 0
         self.TotalPktLen = 0
         
-    def write_data(self, data)
+    def write_data(self, data):
         data = super().write_data(data)
         
         # This is a header required by the radio command interface
@@ -33,11 +33,11 @@ class QradioProtocolCb(Protocol):
         #   our framesych pattern 0xDEADBEEF
         cmd_data_bit_length = (len(data) + 4) * 8
         
-        data = QradioProtocolCb.RADIOSYNC + 
-            struct.pack(">I", cmd_length) + 
-            struct.pack(">I", self.cmd_counter) +
-            struct.pack(">I", cmd_data_bit_length) +
-            QradioProtocolCb.FRAMESYNC +
+        data = QradioProtocolCb.RADIOSYNC + \
+            struct.pack(">I", cmd_length) + \
+            struct.pack(">I", self.cmd_counter) + \
+            struct.pack(">I", cmd_data_bit_length) + \
+            QradioProtocolCb.FRAMESYNC + \
             data
             
         self.cmd_counter += 1
