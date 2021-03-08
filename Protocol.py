@@ -2,6 +2,10 @@
 from .ConfigParser import ConfigParser
 
 class Protocol:
+    # Not sure what :STOP is or where it was defined in the ruby code, but
+    # I'm gonna put it here so that it can be redefined quickly.
+    STOP = "STOP"
+
     # @param allow_empty_data [true/false/nil] Whether or not this protocol will
     # allow an empty string to be passed down to later Protocols (instead of 
     # returning :STOP). Can be true, false, or nil, where nil is interpreted as
@@ -27,9 +31,9 @@ class Protocol:
                 # not sure if this is correct, the ruby is confusing
                 if self.interface and self.interface.read_protocols[-1] == self.interface:
                     # not sure if correct, what is :STOP in the ruby?
-                    return "STOP"
+                    return self.STOP
             elif not allow_empty_data:
-                return "STOP"
+                return self.STOP
         return data
         
     # added these, but they seem to just be echo functions?
