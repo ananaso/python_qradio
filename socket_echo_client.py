@@ -25,19 +25,21 @@ sock.connect(server_address)
 
 try:
 
-    # Send data
-    message = b'This is the message.  It will be repeated.'
-    print('sending {!r}'.format(message))
-    sock.sendall(message)
+    while True:
+        # Send data
+        message = input("> ").encode('utf-8')
+        #message = b'This is the message.  It will be repeated.'
+        print('sending {!r}'.format(message))
+        sock.sendall(message)
 
-    # Look for the response
-    amount_received = 0
-    amount_expected = len(message)
+        # Look for the response
+        amount_received = 0
+        amount_expected = len(message)
 
-    while amount_received < amount_expected:
-        data = sock.recv(16)
-        amount_received += len(data)
-        print('received {!r}'.format(data))
+        while amount_received < amount_expected:
+            data = sock.recv(16)
+            amount_received += len(data)
+            print('received {!r}'.format(data))
 
 finally:
     print('closing socket')
