@@ -12,7 +12,7 @@ class Protocol:
     # true unless the Protocol is the last Protocol of the chain.
     def __init__(self, allow_empty_data = None):
         self.interface = None
-        self.allow_empty_data =
+        self.allow_empty_data = \
             ConfigParser.handle_true_false_nil(allow_empty_data)
         
     # why did the ruby have these reset functions?
@@ -29,7 +29,8 @@ class Protocol:
         if (len(data) <= 0):
             if self.allow_empty_data == None:
                 # not sure if this is correct, the ruby is confusing
-                if self.interface and self.interface.read_protocols[-1] == self.interface:
+                if self.interface and \
+                    self.interface.read_protocols[-1] == self.interface:
                     # not sure if correct, what is :STOP in the ruby?
                     return self.STOP
             elif not allow_empty_data:
