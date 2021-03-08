@@ -4,6 +4,8 @@
 import socket
 import sys
 
+from qradio_protocol_cb import QradioProtocolCb
+
 # Get IP/Port from cmd args if available
 host = 'localhost'
 port = 51103
@@ -23,14 +25,18 @@ server_address = (host, port)
 print('connecting to {} port {}'.format(*server_address))
 sock.connect(server_address)
 
+# initialize the Qradio Protocol
+qradio = QradioProtocolCb()
+
 try:
 
     while True:
         # Send data
-        message = input("> ").encode('utf-8')
         #message = b'This is the message.  It will be repeated.'
-        print('sending {!r}'.format(message))
-        sock.sendall(message)
+        message = input("> ").encode('utf-8')
+        packet = qradio.write_data(message)
+        print('sending {!r}'.format(packet))
+        sock.sendall(packet)
 
         # Look for the response
         amount_received = 0
