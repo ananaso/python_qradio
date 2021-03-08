@@ -2,6 +2,8 @@
 import collections
 import struct
 
+import Protocol
+
 class QradioProtocolCb(Protocol):
     # Using u"" instead of force_encoding equiv because python already maps
     #   Unicode codepoints 0x00-0xFF one-to-one to bytes with same value.
