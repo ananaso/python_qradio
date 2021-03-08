@@ -23,7 +23,7 @@ class QradioProtocolCb(Protocol):
         self.TotalPktLen = 0
         
     def write_data(self, data):
-        data = super().write_data(data)
+        data = Protocol.write_data(data)
         
         # This is a header required by the radio command interface
         # Command length = the number of bytes of the entire command including
