@@ -56,11 +56,11 @@ class QradioProtocolCb(Protocol):
             size = len(self.tlm_buffer)
             if size == 0: # nothing more to read
                 return ""
-            elif ord(self.tlm_buffer[0]) == 222 #0xDE
+            elif ord(self.tlm_buffer[0]) == 222: #0xDE
                 # potentially found the start of the frame
                 self.PktLen = 1
                 break
-            else
+            else:
                 self.tlm_buffer.clear()
     
         # Get the rest of the frame synch if we don't have it yet
@@ -134,7 +134,7 @@ class QradioProtocolCb(Protocol):
         if len(data) != 0:
             #print(f"Pushing packet of size {len(data)}")
             self.input_buffer.append(data)
-        else
+        else:
             return self.STOP
         
         # find telemetry packets
@@ -152,5 +152,5 @@ class QradioProtocolCb(Protocol):
         # return telemetry packets
         if (output_buffer == None) or len(output_buffer) == 0:
             return self.STOP
-        else
+        else:
             return super().read_data(output_buffer)
