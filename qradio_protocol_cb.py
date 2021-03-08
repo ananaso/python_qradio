@@ -8,9 +8,9 @@ class QradioProtocolCb(Protocol):
     # Using u"" instead of force_encoding equiv because python already maps
     #   Unicode codepoints 0x00-0xFF one-to-one to bytes with same value.
     #   See: https://stackoverflow.com/a/40579318/1860001
-    RADIOSYNC = u"\x52\x54\x4C\x20"
-    CMDACK = u"\x52\x54\x4C\x22"
-    FRAMESYNC = u"\xDE\xAD\xBE\xEF"
+    RADIOSYNC = "\x52\x54\x4C\x20".encode('utf-8')
+    CMDACK = "\x52\x54\x4C\x22".encode('utf-8')
+    FRAMESYNC = "\xDE\xAD\xBE\xEF".encode('utf-8')
     
     def __init__(self, allow_empty_data = None):
         super().__init__(allow_empty_data)
