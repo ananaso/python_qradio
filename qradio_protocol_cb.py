@@ -2,7 +2,7 @@
 import collections
 import struct
 
-import Protocol
+from Protocol import Protocol
 
 class QradioProtocolCb(Protocol):
     # Using u"" instead of force_encoding equiv because python already maps

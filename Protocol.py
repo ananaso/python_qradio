@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import ConfigParser
+from ConfigParser import ConfigParser
 
 class Protocol:
     # Not sure what :STOP is or where it was defined in the ruby code, but
