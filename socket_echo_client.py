@@ -40,7 +40,7 @@ try:
 
         # Look for the response
         amount_received = 0
-        amount_expected = len(message)
+        amount_expected = len(packet)
 
         while amount_received < amount_expected:
             data = sock.recv(16)
