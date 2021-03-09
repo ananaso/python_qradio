@@ -31,11 +31,11 @@ class QradioProtocolCb(Protocol):
         cmd_data_bit_length = (len(data) + 4) * 8
         
         data = QradioProtocolCb.RADIOSYNC + \
-            struct.pack(">I", cmd_length) + \
-            struct.pack(">I", self.cmd_counter) + \
-            struct.pack(">I", cmd_data_bit_length) + \
-            QradioProtocolCb.FRAMESYNC + \
-            data
+               struct.pack(">I", cmd_length) + \
+               struct.pack(">I", self.cmd_counter) + \
+               struct.pack(">I", cmd_data_bit_length) + \
+               QradioProtocolCb.FRAMESYNC + \
+               data
             
         self.cmd_counter += 1
         return data
@@ -68,6 +68,18 @@ class QradioProtocolCb(Protocol):
             self.PktLen = len(self.tlm_buffer)
             # if we don't have the full synch pattern yet
             if self.PktLen < 4:
+                return ""
+                
+            # we have 4 bytes that could be the synch pattern, let's check
+            if ord(self.tlm_buffer[0]) != 222 and \
+               ord(self.tlm_buffer[1]) != 173 and \
+               ord(self.tlm_buffer[2]) != 190 and \
+               ord(self.tlm_buffer[3]) != 239:
+                # It wasn't the synch pattern, so reset all of the state 
+                #   variables and return
+                self.PktLen = 0
+                self.TotalPktLen = 0
+                self.tlm_buffer.clear()
                 return ""
         
         # We've found the frame synch but we don't have the entire header yet
