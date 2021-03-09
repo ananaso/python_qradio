@@ -5,12 +5,9 @@ import struct
 from Protocol import Protocol
 
 class QradioProtocolCb(Protocol):
-    # Using u"" instead of force_encoding equiv because python already maps
-    #   Unicode codepoints 0x00-0xFF one-to-one to bytes with same value.
-    #   See: https://stackoverflow.com/a/40579318/1860001
-    RADIOSYNC = b'\x52\x54\x4C\x20'
-    CMDACK = b'\x52\x54\x4C\x22'
-    FRAMESYNC = b'\xDE\xAD\xBE\xEF'
+    RADIOSYNC = '\x52\x54\x4C\x20'.encode('latin-1')
+    CMDACK = '\x52\x54\x4C\x22'.encode('latin-1')
+    FRAMESYNC = '\xDE\xAD\xBE\xEF'.encode('latin-1')
     
     def __init__(self, allow_empty_data = None):
         super().__init__(allow_empty_data)
@@ -53,6 +50,7 @@ class QradioProtocolCb(Protocol):
         #   we find 0xDE
         while (size != 0) and (self.PktLen == 0):
             self.tlm_buffer.append(self.input_buffer.pop())
+            print(f"tlm_buffer: {self.tlm_buffer}")
             size = len(self.tlm_buffer)
             if size == 0: # nothing more to read
                 return ""
@@ -127,13 +125,15 @@ class QradioProtocolCb(Protocol):
             return ''.join(str(x) for x in tlm_packet)
             
     def read_data(self, data):
-        tlm_pkt = b'\xAA'
-        output_buffer = b''
+        tlm_pkt = '\xAA'.encode('latin-1')
+        output_buffer = ''.encode('latin-1')
         
         # push data onto the circular buffer
         if len(data) != 0:
-            #print(f"Pushing packet of size {len(data)}")
-            self.input_buffer.append(data)
+            data = data.decode('latin-1')
+            for i in range(0, len(data)):
+                data_chunk = data[i]
+                self.input_buffer.append(data_chunk)
         else:
             return self.STOP
         
