@@ -4,9 +4,11 @@
 import socket
 import sys
 
+from qradio_protocol_cb import QradioProtocolCb
+
 # Get IP/Port from cmd args if available
 host = 'localhost'
-port = 51103
+port = 51104
 try:
     host = sys.argv[1]
     port = int(sys.argv[2])
@@ -23,6 +25,9 @@ server_address = (host, port)
 print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
+# initialize the Qradio Protocol
+qradio = QradioProtocolCb()
+
 # Listen for incoming connections
 sock.listen(1)
 
@@ -33,17 +38,23 @@ while True:
     try:
         print('connection from', client_address)
 
-        # Receive the data in small chunks and retransmit it
+        # Receive the data in small chunks
+        whole_data = ''.encode('latin-1')
         while True:
             data = connection.recv(16)
             print('received {!r}'.format(data))
-            if data:
-                print('sending data back to the client')
-                connection.sendall(data)
-            else:
-                print('no data from', client_address)
+            if not data:
                 break
-
+            whole_data += data
+        
+        # read data through qradio protocol
+        packet = qradio.read_data(whole_data)
+        print(packet)
+        
+        # echo command
+        if packet:
+            print('sending data back to the client')
+            connection.sendall(packet)
     finally:
         # Clean up the connection
         connection.close()

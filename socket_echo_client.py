@@ -8,7 +8,7 @@ from qradio_protocol_cb import QradioProtocolCb
 
 # Get IP/Port from cmd args if available
 host = 'localhost'
-port = 51103
+port = 51104
 try:
     host = sys.argv[1]
     port = int(sys.argv[2])
