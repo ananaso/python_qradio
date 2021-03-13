@@ -36,7 +36,13 @@ while True:
     # Wait for a connection
     print('waiting for a connection')
     
-    connection, client_address = sock.accept()
+    try:
+        connection, client_address = sock.accept()
+    except KeyboardInterrupt:
+        # close a bit more gracefully
+        print('shutting down')
+        sys.exit()
+        
     try:
         print('connection from', client_address)
         
