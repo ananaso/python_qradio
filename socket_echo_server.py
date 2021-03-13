@@ -73,13 +73,22 @@ while True:
                 cmd_counter = struct.unpack(">I", whole_data[8:12])[0]
                 cmd_data_bit_length = struct.unpack(">I", whole_data[12:16])[0]
                 data = whole_data[20:]
+                # pretty-print data
+                data_str = f"data:\t"
+                data_chunk = ''
+                for i in range(0, len(data)):
+                    data_chunk += format(data[i], '02X') + ' '
+                    if (i+1) % 8 == 0:
+                        data_chunk += '\n\t\t'
+                        data_str += data_chunk
+                        data_chunk = ''
                 print("Unfurled received packet:")
                 print(f"\tRADIOSYNC: 0x{radiosync.hex()}")
                 print(f"\tcmd_length: {cmd_length}")
                 print(f"\tcmd_counter: {cmd_counter}")
                 print(f"\tcmd_data_bit_length: {cmd_data_bit_length}")
                 print(f"\tFRAMESYNC: 0x{framesync.hex()}")
-                print(f"\tdata: {data}")
+                print(f"\t{data_str}")
         
         """
         REMOVED SENDBACK SINCE IT ISN'T WHAT COSMOS EXPECTS/WANTS
